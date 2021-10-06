@@ -80,13 +80,21 @@ def _parse_latest_version(filepath: str or Path):
 def get_regressor(
     filepath: str = "data/06_models/regressor.pickle", root: Path = PROJ_DIR
 ):
-    latest_version = _parse_latest_version(root / filepath)
+    filepath = root / filepath
+    if not filepath.exists():
+        return None
+
+    latest_version = _parse_latest_version(filepath)
     regressor = pd.read_pickle(latest_version)
     return regressor
 
 
 def get_features(filepath: str = "conf/base/parameters.yml", root: Path = PROJ_DIR):
-    parameters = yaml.safe_load(open(root / filepath, "r"))
+    filepath = root / filepath
+    if not filepath.exists():
+        return None
+
+    parameters = yaml.safe_load(open(filepath, "r"))
     features = parameters["features"]
     return features
 
