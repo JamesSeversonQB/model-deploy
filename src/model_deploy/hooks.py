@@ -37,6 +37,7 @@ from kedro.versioning import Journal
 
 from model_deploy.pipelines import data_engineering as de
 from model_deploy.pipelines import data_science as ds
+from model_deploy.pipelines import score as score
 
 
 class ProjectHooks:
@@ -50,11 +51,13 @@ class ProjectHooks:
         """
         data_engineering_pipeline = de.create_pipeline()
         data_science_pipeline = ds.create_pipeline()
+        score_pipeline = score.create_pipeline()
 
         return {
             "__default__": data_engineering_pipeline + data_science_pipeline,
             "de": data_engineering_pipeline,
             "ds": data_science_pipeline,
+            "score": score_pipeline,
         }
 
     @hook_impl

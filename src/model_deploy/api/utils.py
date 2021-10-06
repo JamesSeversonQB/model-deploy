@@ -29,13 +29,14 @@
 This is a boilerplate pipeline 'score'
 generated using Kedro 0.16.6
 """
-from typing import List
+import glob
 from pathlib import Path
-from sklearn.linear_model import LinearRegression
+from typing import List
+
 import pandas as pd
 import yaml
-import glob
 from pydantic import BaseModel
+from sklearn.linear_model import LinearRegression
 
 PROJ_DIR = Path(__file__).parent.parent.parent.parent
 
@@ -56,6 +57,10 @@ class MultiModelInput(BaseModel):
 class ModelOutput(BaseModel):
     uuid: int or str
     score: float
+
+
+class MultiModelOutput(BaseModel):
+    model_outputs: List[ModelOutput]
 
 
 def _parse_latest_version(filepath: str or Path):
@@ -80,9 +85,7 @@ def get_regressor(
     return regressor
 
 
-def get_features(
-    filepath: str = "conf/base/parameters.yml", root: Path = PROJ_DIR
-):
+def get_features(filepath: str = "conf/base/parameters.yml", root: Path = PROJ_DIR):
     parameters = yaml.safe_load(open(root / filepath, "r"))
     features = parameters["features"]
     return features

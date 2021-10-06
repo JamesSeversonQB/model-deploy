@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from .utils import get_regressor, get_features, score_json, ModelInput, ModelOutput
+from .utils import ModelInput, ModelOutput, get_features, get_regressor, score_json
 
 regressor = get_regressor()
 features = get_features()
@@ -18,8 +18,5 @@ def score_one(model_input: ModelInput) -> dict:
     data = model_input.dict()
     score = score_json(regressor, data, features)
 
-    response = dict(
-        uuid=uuid,
-        score=score
-    )
+    response = dict(uuid=uuid, score=score)
     return response
