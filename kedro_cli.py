@@ -43,6 +43,10 @@ from kedro.framework.cli.utils import KedroCliError, env_option, split_string
 from kedro.framework.context import load_context
 from kedro.utils import load_obj
 
+# Silence stupid Numpy warnings
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
 # get our package onto the python path

@@ -48,7 +48,10 @@ setup(
     name="model_deploy",
     version="0.1",
     packages=find_packages(exclude=["tests"]),
-    entry_points={"console_scripts": [entry_point]},
+    entry_points={
+        "console_scripts": [entry_point],
+        "kedro.project_commands": ["api = model_deploy.api.plugin:commands"],
+    },
     install_requires=requires,
     extras_require={
         "docs": [
