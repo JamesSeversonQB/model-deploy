@@ -1,5 +1,20 @@
 # Model Deploy
+Use the kedro spaceflights starter (0.16.6) and deploy scoring service via API.
 
+```bash
+# 1. Kedro independent
+uvicorn src.model_deploy.api.main:app
+uvicorn src.model_deploy.api.main:app --port 8001
+
+# 2. As Kedro pipeline
+kedro run --pipeline score
+kedro run --pipeline score --params port:8002
+
+# 3. As kedro plugin
+kedro api
+kedro api --port 8003
+
+```
 ## Overview
 
 This is your new Kedro project, which was generated using `Kedro 0.16.6`, with the completed version of the [Space Flights tutorial](https://kedro.readthedocs.io/en/stable/03_tutorial/01_spaceflights_tutorial.html) and the data necessary to run the project.
