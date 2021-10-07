@@ -1,9 +1,10 @@
-from fastapi import FastAPI
-from sklearn.linear_model import LinearRegression
-from model_deploy.api.utils import ModelInput, ModelOutput, score_json
 import click
-from kedro.framework.cli import get_project_context
 import uvicorn
+from fastapi import FastAPI
+from kedro.framework.cli import get_project_context
+from sklearn.linear_model import LinearRegression
+
+from model_deploy.api.utils import ModelInput, ModelOutput, score_json
 
 # Overload from kedro catalog
 regressor: LinearRegression
@@ -31,8 +32,11 @@ def score_one(model_input: ModelInput) -> dict:
 def commands():
     """Run fastapi"""
 
+
 @commands.command()
-def api():
+@click.option("--port", default=None, type=int)
+@click.option("--host", default=None)
+def api(port, host):
     context = get_project_context()
 
     # Data Science params
@@ -42,7 +46,7 @@ def api():
     features = context.catalog.load("params:features")
 
     # App params
-    host = context.catalog.load("params:host")
-    port = context.catalog.load("params:port")
+    host = host or context.catalog.load("params:host")
+    port = port or context.catalog.load("params:port")
 
     uvicorn.run(app, host=host, port=port, log_level="info")

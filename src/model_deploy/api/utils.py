@@ -33,6 +33,7 @@ import glob
 from pathlib import Path
 from typing import List
 
+import numpy as np
 import pandas as pd
 import yaml
 from pydantic import BaseModel
@@ -101,7 +102,17 @@ def get_features(filepath: str = "conf/base/parameters.yml", root: Path = PROJ_D
 
 def score_pandas(
     regressor: LinearRegression, df: pd.DataFrame, features: list
-) -> pd.DataFrame:
+) -> np.ndarray:
+    """Simple method to score pandas dataframe with serialized model
+
+    Args:
+        regressor (LinearRegression): Serialized model
+        df (pd.DataFrame): Data with features in the column names
+        features (list): Columns to subset data, in order, for scoring by regressor
+
+    Returns:
+        pd.DataFrame: Single column dataframe with scores
+    """
     X = df[features]
     y_hat = regressor.predict(X)
     return y_hat
@@ -109,7 +120,17 @@ def score_pandas(
 
 def score_json(
     regressor: LinearRegression, model_input: dict, features: list
-) -> pd.DataFrame:
+) -> np.ndarray:
+    """Take a model regressor object, model input data, and make prediction
+
+    Args:
+        regressor (LinearRegression): Serialized model
+        model_input (dict): Singleton
+        features (list): Column names of regressor, in order
+
+    Returns:
+        pd.DataFrame: Single column dataframe with scores
+    """
     df = _json_to_pandas(model_input)
     y_hat = score_pandas(regressor, df, features)
     return y_hat

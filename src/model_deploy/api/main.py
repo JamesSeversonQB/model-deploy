@@ -1,9 +1,16 @@
 from fastapi import FastAPI
 
-from .utils import ModelInput, ModelOutput, get_features, get_regressor, score_json
+from model_deploy.api.utils import (
+    ModelInput,
+    ModelOutput,
+    get_features,
+    get_regressor,
+    score_json,
+)
 
 regressor = get_regressor()
 features = get_features()
+
 app = FastAPI()
 
 
